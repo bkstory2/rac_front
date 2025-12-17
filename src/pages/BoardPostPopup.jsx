@@ -8,10 +8,11 @@ export default function BoardPostPopup({ brCd, post = null, onClose, onSaved }) 
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
 
+  // post가 변경될 때마다 폼 초기화
   useEffect(() => {
     if (post) {
-      setTitle(post.title || post.postTitle || "");
-      setContent(post.content || post.postContent || "");
+      setTitle(post.br_title || "");
+      setContent(post.br_content || "");
     } else {
       setTitle("");
       setContent("");
@@ -19,181 +20,181 @@ export default function BoardPostPopup({ brCd, post = null, onClose, onSaved }) 
     setError("");
   }, [post]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // 입력값 검증
     if (!title.trim()) {
       setError("제목을 입력해주세요.");
       return;
     }
-    
     if (!content.trim()) {
       setError("내용을 입력해주세요.");
       return;
     }
 
+    setIsSaving(true);
+    setError("");
+
     try {
-      setIsSaving(true);
-      setError("");
-
-      const postData = {
-        brCd,
-        title: title.trim(),
-        content: content.trim(),
-        author: "작성자" // 실제로는 로그인 정보에서 가져와야 함
-      };
-
       if (post) {
-        // 수정
-        await updateBoardPost(post.id || post.postId, postData);
+        // 수정 모드 - br_pid가 필요함
+        if (!post.br_pid) {
+          throw new Error("게시글 ID가 없습니다.");
+        }
+        await updateBoardPost(brCd, post.br_pid, {
+          br_title: title,
+          br_content: content,
+        });
       } else {
-        // 새 글 작성
-        await createBoardPost(postData);
+        // 생성 모드
+        await createBoardPost(brCd, {
+          br_title: title,
+          br_content: content,
+        });
       }
 
-      onSaved();
+      // 성공 시 콜백 호출
+      if (onSaved) onSaved();
+
+      // 팝업 닫기
+      if (onClose) onClose();
     } catch (err) {
       console.error("게시글 저장 오류:", err);
-      setError(`저장 중 오류가 발생했습니다: ${err.message}`);
+      setError(err.message || "저장 중 오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
       setIsSaving(false);
     }
   };
 
-  // ESC 키로 닫기
-  useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
-  }, [onClose]);
+  const handleCancel = () => {
+    if (onClose) onClose();
+  };
+
+  // brCd가 없는 경우 기본값 처리
+  if (!brCd) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl mx-4">
+          <div className="text-red-500">게시판 코드가 유효하지 않습니다.</div>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="mt-4 px-4 py-2 bg-gray-300 rounded"
+          >
+            닫기
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const SpinnerIcon = () => (
+    <svg
+      className="animate-spin h-4 w-4 mr-2 text-white"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+        fill="none"
+      />
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      />
+    </svg>
+  );
 
   return (
-    <div style={overlayStyle}>
-      <div style={popupStyle}>
-        <h3 style={{ marginTop: 0, color: "#333", borderBottom: "1px solid #eee", paddingBottom: 10 }}>
-          {post ? "✏️ 게시글 수정" : "✏️ 새 글 작성"}
-          <small style={{ display: "block", fontSize: 12, color: "#666", fontWeight: "normal" }}>
-            게시판: {brCd}
-          </small>
-        </h3>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl mx-4">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">
+            {post ? "게시글 수정" : "새 게시글 작성"}
+          </h2>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="text-gray-500 hover:text-gray-700 disabled:opacity-50"
+            disabled={isSaving}
+            aria-label="닫기"
+          >
+            ✕
+          </button>
+        </div>
 
         {error && (
-          <div style={errorStyle}>
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded">
             {error}
           </div>
         )}
 
-        <div style={{ marginBottom: 15 }}>
-          <label style={labelStyle}>제목</label>
-          <input
-            type="text"
-            placeholder="제목을 입력하세요"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            style={inputStyle}
-            autoFocus
-          />
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2 font-medium">
+              제목 <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+              placeholder="제목을 입력하세요"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              disabled={isSaving}
+              maxLength={200}
+            />
+          </div>
 
-        <div style={{ marginBottom: 20 }}>
-          <label style={labelStyle}>내용</label>
-          <textarea
-            placeholder="내용을 입력하세요"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            style={{ ...inputStyle, height: 200, resize: "vertical" }}
-          />
-        </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 mb-2 font-medium">
+              내용 <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+              placeholder="내용을 입력하세요"
+              rows={10}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              disabled={isSaving}
+              maxLength={4000}
+            />
+          </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
-          <button
-            onClick={onClose}
-            disabled={isSaving}
-            style={cancelButtonStyle}
-          >
-            취소
-          </button>
-          <button
-            onClick={handleSubmit}
-            disabled={isSaving}
-            style={{
-              ...submitButtonStyle,
-              backgroundColor: isSaving ? "#ccc" : "#4CAF50"
-            }}
-          >
-            {isSaving ? "저장 중..." : (post ? "수정" : "등록")}
-          </button>
-        </div>
+          <div className="flex justify-end space-x-3 pt-4 border-t">
+            <button
+              type="button"
+              className="px-5 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleCancel}
+              disabled={isSaving}
+            >
+              취소
+            </button>
+            <button
+              type="submit"
+              className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed min-w-[80px] flex items-center justify-center"
+              disabled={isSaving}
+            >
+              {isSaving ? (
+                <>
+                  <SpinnerIcon />
+                  저장 중
+                </>
+              ) : post ? (
+                "수정"
+              ) : (
+                "저장"
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
 }
-
-const overlayStyle = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: "rgba(0,0,0,0.5)",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  zIndex: 1000
-};
-
-const popupStyle = {
-  backgroundColor: "white",
-  padding: 30,
-  borderRadius: 10,
-  width: "90%",
-  maxWidth: 700,
-  maxHeight: "90vh",
-  overflowY: "auto",
-  boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
-};
-
-const labelStyle = {
-  display: "block",
-  marginBottom: 5,
-  fontWeight: "bold",
-  color: "#555"
-};
-
-const inputStyle = {
-  width: "100%",
-  padding: 12,
-  border: "1px solid #ddd",
-  borderRadius: 5,
-  fontSize: 16,
-  boxSizing: "border-box"
-};
-
-const errorStyle = {
-  padding: 12,
-  backgroundColor: "#ffebee",
-  color: "#c62828",
-  borderRadius: 5,
-  marginBottom: 15,
-  fontSize: 14
-};
-
-const cancelButtonStyle = {
-  padding: "10px 20px",
-  backgroundColor: "#f5f5f5",
-  color: "#333",
-  border: "1px solid #ddd",
-  borderRadius: 5,
-  cursor: "pointer",
-  fontSize: 16
-};
-
-const submitButtonStyle = {
-  padding: "10px 25px",
-  color: "white",
-  border: "none",
-  borderRadius: 5,
-  cursor: "pointer",
-  fontSize: 16,
-  fontWeight: "bold"
-};
