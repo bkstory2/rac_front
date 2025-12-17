@@ -10,7 +10,7 @@ export default function MemoList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
- // 데이터 로드 함수에 변환 로직 추가
+ // 데이터 로드 함수에 변환 로직 추가   2222
 const loadMemos = useCallback(async () => {
   try {
     setLoading(true);
