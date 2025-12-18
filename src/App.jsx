@@ -135,7 +135,7 @@ function App() {
       {/* 인라인 스타일 대신 간단한 CSS 추가 */}
       <style jsx="true">{`
         .nav-link:hover {
-          background-color: #4CAF50 !important;
+          background-color: #b0cab0ff !important;
         }
         
         @media (max-width: 768px) {

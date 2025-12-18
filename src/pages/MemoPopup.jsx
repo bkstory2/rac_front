@@ -248,7 +248,7 @@ export default function MemoPopup({ memo, onClose, onSaved }) {
                 width: "100%",
                 height: 200,
                 padding: 10,
-                border: `1px solid ${hasUnsavedChanges() ? "#ff9800" : "#ddd"}`,
+                border: `1px solid ${hasUnsavedChanges() ? "#dbc8abff" : "#ddd"}`,
                 borderRadius: 5,
                 fontSize: 16,
                 resize: "vertical",
@@ -303,7 +303,7 @@ export default function MemoPopup({ memo, onClose, onSaved }) {
                 disabled={isSaving || (!ftitle.trim() && !fcontent.trim())}
                 style={{
                   padding: "10px 20px",
-                  backgroundColor: isSaving ? "#ccc" : "#4CAF50",
+                  backgroundColor: isSaving ? "#ccc" : "#9ebb9fff",
                   color: "white",
                   border: "none",
                   borderRadius: 5,
@@ -358,7 +358,7 @@ export default function MemoPopup({ memo, onClose, onSaved }) {
             maxWidth: 400,
             boxShadow: "0 4px 20px rgba(0,0,0,0.3)"
           }}>
-            <h4 style={{ marginTop: 0, color: "#d32f2f", marginBottom: 15 }}>
+            <h4 style={{ marginTop: 0, color: "#ecd0d0ff", marginBottom: 15 }}>
               ⚠️ 저장되지 않은 변경사항
             </h4>
             
@@ -389,7 +389,7 @@ export default function MemoPopup({ memo, onClose, onSaved }) {
                 }}
                 style={{
                   padding: "8px 20px",
-                  backgroundColor: "#f44336",
+                  backgroundColor: "#b9a2a0ff",
                   color: "white",
                   border: "none",
                   borderRadius: 5,

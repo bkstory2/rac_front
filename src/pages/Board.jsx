@@ -278,7 +278,7 @@ export default function Board() {
                 
                 {/* 게시글 상세 */}
                 <div style={{ backgroundColor: "#fff", padding: 30, borderRadius: 8, border: "1px solid #dee2e6", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
-                    <h2 style={{ marginTop: 0, borderBottom: "2px solid #007bff", paddingBottom: 10, color: "#343a40" }}>
+                    <h2 style={{ marginTop: 0, borderBottom: "2px solid #bbccdfff", paddingBottom: 10, color: "#343a40" }}>
                         {detailView.br_title}
                     </h2>
                     
@@ -313,7 +313,7 @@ export default function Board() {
                             onClick={() => handleEditPost(detailView)}
                             style={{ 
                                 padding: "10px 20px", 
-                                backgroundColor: "#007bff",
+                                backgroundColor: "#c3cfddff",
                                 color: "#fff",
                                 border: "none",
                                 borderRadius: 4,
@@ -327,7 +327,7 @@ export default function Board() {
                             onClick={() => handleDeletePost(detailView.br_seq, detailView.br_title)}
                             style={{ 
                                 padding: "10px 20px", 
-                                backgroundColor: "#dc3545",
+                                backgroundColor: "#cca9adff",
                                 color: "#fff",
                                 border: "none",
                                 borderRadius: 4,
@@ -518,7 +518,7 @@ export default function Board() {
                             onClick={() => handleChangeBoard(code)}
                             style={{
                                 padding: "8px 15px",
-                                backgroundColor: brCd === code ? "#007bff" : "#f8f9fa",
+                                backgroundColor: brCd === code ? "#ccdae9ff" : "#f8f9fa",
                                 color: brCd === code ? "#fff" : "#495057",
                                 border: "1px solid #dee2e6",
                                 borderRadius: 4,
@@ -538,9 +538,9 @@ export default function Board() {
                 padding: "20px", 
                 borderRadius: 8, 
                 marginBottom: 30,
-                borderLeft: "4px solid #007bff"
+                borderLeft: "4px solid #b4c2d1ff"
             }}>
-                <p style={{ margin: 0, color: "#0056b3", fontSize: "16px" }}>
+                <p style={{ margin: 0, color: "#9aa7b6ff", fontSize: "16px" }}>
                     {boardInfo.description || `${brCd} 게시판입니다. 총 ${boardInfo.totalPosts || 0}개의 글이 있습니다.`}
                 </p>
             </div>
@@ -581,7 +581,7 @@ export default function Board() {
                             onClick={() => { setSearchKeyword(""); loadBoardData(1); }}
                             style={{ 
                                 padding: "12px 20px", 
-                                backgroundColor: "#dc3545", 
+                                backgroundColor: "#e6b8bdff", 
                                 color: "#fff", 
                                 border: "none", 
                                 borderRadius: 4,
@@ -597,7 +597,7 @@ export default function Board() {
                     onClick={handleNewPost}
                     style={{
                         padding: "12px 25px",
-                        backgroundColor: "#28a745",
+                        backgroundColor: "#9dc2a6ff",
                         color: "#fff",
                         border: "none",
                         borderRadius: "4px",
@@ -617,7 +617,7 @@ export default function Board() {
                     <p style={{ fontSize: "18px" }}>게시글을 불러오는 중...</p>
                 </div>
             ) : error ? (
-                <div style={{ padding: 40, backgroundColor: "#fff", borderRadius: "8px", color: "#dc3545", textAlign: "center", border: "1px solid #f8d7da" }}>
+                <div style={{ padding: 40, backgroundColor: "#fff", borderRadius: "8px", color: "#ccb9bbff", textAlign: "center", border: "1px solid #f8d7da" }}>
                     <div style={{ fontSize: "48px", marginBottom: "20px" }}>⚠️</div>
                     <p style={{ fontSize: "18px", marginBottom: 20 }}>{error}</p>
                     <button 
@@ -750,7 +750,7 @@ export default function Board() {
                                             onClick={() => handleDeletePost(post.br_seq, post.br_title)}
                                             style={{ 
                                                 padding: "6px 12px", 
-                                                backgroundColor: "#dc3545",
+                                                backgroundColor: "#dbb6baff",
                                                 color: "#fff",
                                                 border: "none",
                                                 borderRadius: 3,
@@ -838,7 +838,7 @@ export default function Board() {
                     }}>
                         <div>
                             <span style={{ color: "#6c757d" }}>총 </span>
-                            <span style={{ color: "#007bff", fontWeight: "bold", fontSize: "18px" }}>
+                            <span style={{ color: "#b0bbc7ff", fontWeight: "bold", fontSize: "18px" }}>
                                 {boardInfo.totalPosts || 0}
                             </span>
                             <span style={{ color: "#6c757d" }}> 개의 글</span>
