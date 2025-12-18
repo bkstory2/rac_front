@@ -4,44 +4,69 @@ import Board from "./pages/Board";
 import Home from "./pages/Home";
 
 function App() {
-  // NavLink 스타일 함수를 컴포넌트 내부로 이동
   const getActiveMenuStyle = (isActive) => ({
-    color: "white",
+    color: isActive ? "#fff" : "#e0e0e0",
     textDecoration: "none",
-    padding: "8px 12px",
-    borderRadius: "4px",
-    transition: "background-color 0.3s",
-    backgroundColor: isActive ? "#4CAF50" : "transparent",
-    fontWeight: isActive ? "bold" : "normal",
+    padding: "10px 16px",
+    borderRadius: "6px",
+    transition: "all 0.3s ease",
+    backgroundColor: isActive ? "#555" : "transparent",
+    fontWeight: isActive ? "500" : "400",
+    fontSize: "15px",
     display: "inline-block",
   });
 
-  // hover 스타일은 inline style로 처리할 수 없으므로 CSS 파일이나 CSS-in-JS로 처리해야 합니다.
-  // 여기서는 간단히 style 객체에 hover 효과를 제거하고 대신 hover 클래스를 사용하도록 수정합니다.
-  
   return (
     <Router>
-      <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", display: "flex", flexDirection: "column" }}>
+      <div style={{ 
+        minHeight: "100vh", 
+        display: "flex", 
+        flexDirection: "column",
+        alignItems: "center",
+        backgroundColor: "#f5f5f5"
+      }}>
         {/* 헤더 메뉴 */}
         <header style={{
           backgroundColor: "#333",
           color: "white",
-          padding: "15px 20px",
-          boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+          padding: "0",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
           position: "sticky",
           top: 0,
           zIndex: 100,
+          width: "100%",
         }}>
           <div style={{
-            maxWidth: 1200,
+            maxWidth: 1024,
+            width: "100%",
             margin: "0 auto",
+            padding: "0 20px",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            flexWrap: "wrap",
+            height: "64px",
           }}>
-            <h1 style={{ margin: 0, fontSize: 24 }}>
-              <NavLink to="/" style={{ color: "white", textDecoration: "none" }}>
+            <h1 style={{ 
+              margin: 0, 
+              fontSize: "20px",
+              fontWeight: "500",
+              letterSpacing: "-0.3px"
+            }}>
+              <NavLink to="/" style={{ 
+                color: "white", 
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px"
+              }}>
+                <span style={{ 
+                  backgroundColor: "#555", 
+                  padding: "4px 8px", 
+                  borderRadius: "4px",
+                  fontSize: "16px"
+                }}>
+                  📝
+                </span>
                 메모 & 게시판 시스템
               </NavLink>
             </h1>
@@ -52,8 +77,7 @@ function App() {
                 listStyle: "none",
                 margin: 0,
                 padding: 0,
-                gap: 10,
-                flexWrap: "wrap",
+                gap: "4px",
               }}>
                 <li>
                   <NavLink 
@@ -97,7 +121,7 @@ function App() {
                     style={({ isActive }) => getActiveMenuStyle(isActive)}
                     className="nav-link"
                   >
-                    메모
+                    메모장
                   </NavLink>
                 </li>
               </ul>
@@ -107,11 +131,11 @@ function App() {
 
         {/* 메인 컨텐츠 */}
         <main style={{
-          maxWidth: 1200,
-          margin: "20px auto",
+          maxWidth: 1024,
+          width: "100%",
+          margin: "30px auto 40px",
           padding: "0 20px",
           flex: 1,
-          width: "100%",
         }}>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -123,29 +147,66 @@ function App() {
         {/* 푸터 */}
         <footer style={{
           backgroundColor: "#333",
-          color: "#999",
+          color: "#aaa",
           textAlign: "center",
-          padding: "20px",
-          marginTop: "40px",
+          padding: "24px 20px",
+          marginTop: "auto",
+          width: "100%",
+          borderTop: "1px solid #444"
         }}>
-          <p>© 2024 메모 & 게시판 시스템. All rights reserved.</p>
+          <div style={{
+            maxWidth: 1024,
+            margin: "0 auto",
+            width: "100%"
+          }}>
+            <p style={{ 
+              margin: 0, 
+              fontSize: "14px",
+              lineHeight: "1.6"
+            }}>
+              © 2024 메모 & 게시판 시스템
+              <span style={{ 
+                display: "block", 
+                marginTop: "4px",
+                fontSize: "12px",
+                color: "#888"
+              }}>
+                모든 권리 보유
+              </span>
+            </p>
+          </div>
         </footer>
       </div>
 
-      {/* 인라인 스타일 대신 간단한 CSS 추가 */}
+      {/* 인라인 스타일 */}
       <style jsx="true">{`
         .nav-link:hover {
-          background-color: #b0cab0ff !important;
+          background-color: rgba(85, 85, 85, 0.3) !important;
+          color: white !important;
         }
         
         @media (max-width: 768px) {
           header > div {
             flex-direction: column;
-            gap: 15px;
+            height: auto;
+            padding: 12px;
+            gap: 12px;
           }
           
           nav ul {
+            flex-wrap: wrap;
             justify-content: center;
+            gap: 6px;
+          }
+          
+          h1 {
+            font-size: 18px;
+          }
+        }
+        
+        @media (max-width: 1024px) {
+          main {
+            padding: 0 16px;
           }
         }
       `}</style>

@@ -129,23 +129,23 @@ export default function MemoList() {
             </div>
           )}
           <button 
-            onClick={handleAddNew}
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "#4CAF50",
-              color: "white",
-              border: "none",
-              borderRadius: 5,
-              cursor: "pointer",
-              fontSize: 16,
-              fontWeight: "bold",
-              transition: "background-color 0.3s"
-            }}
-            onMouseOver={(e) => e.target.style.backgroundColor = "#d1e9d2ff"}
-            onMouseOut={(e) => e.target.style.backgroundColor = "#98b699ff"}
-          >
-            + 새 메모 추가
-          </button>
+          onClick={handleAddNew}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#555",
+            color: "white",
+            border: "none",
+            borderRadius: 5,
+            cursor: "pointer",
+            fontSize: 16,
+            fontWeight: "500",
+            transition: "background-color 0.3s"
+          }}
+          onMouseOver={(e) => e.target.style.backgroundColor = "#444"}
+          onMouseOut={(e) => e.target.style.backgroundColor = "#555"}
+        >
+          + 새 메모 추가
+        </button>
         </div>
       </div>
 
@@ -318,24 +318,24 @@ export default function MemoList() {
                     onClick={() => handleEdit(m)}
                     style={{
                       padding: "8px 15px",
-                      backgroundColor: "#bdc9d3ff",
-                      color: "white",
-                      border: "none",
+                      backgroundColor: "#f8f8f8",
+                      color: "#333",
+                      border: "1px solid #ddd",
                       borderRadius: 4,
                       cursor: "pointer",
                       fontSize: 14,
                       transition: "background-color 0.2s"
                     }}
-                    onMouseOver={(e) => e.target.style.backgroundColor = "#9ca7b3ff"}
-                    onMouseOut={(e) => e.target.style.backgroundColor = "#bbceddff"}
+                    onMouseOver={(e) => e.target.style.backgroundColor = "#f0f0f0"}
+                    onMouseOut={(e) => e.target.style.backgroundColor = "#f8f8f8"}
                   >
                     수정
                   </button>
-                  <button 
+                   <button 
                     onClick={() => handleDelete(m.fid)}
                     style={{
                       padding: "8px 15px",
-                      backgroundColor: "#f44336",
+                      backgroundColor: "#333",
                       color: "white",
                       border: "none",
                       borderRadius: 4,
@@ -343,8 +343,8 @@ export default function MemoList() {
                       fontSize: 14,
                       transition: "background-color 0.2s"
                     }}
-                    onMouseOver={(e) => e.target.style.backgroundColor = "#837272ff"}
-                    onMouseOut={(e) => e.target.style.backgroundColor = "#d1afadff"}
+                    onMouseOver={(e) => e.target.style.backgroundColor = "#222"}
+                    onMouseOut={(e) => e.target.style.backgroundColor = "#333"}
                   >
                     삭제
                   </button>
